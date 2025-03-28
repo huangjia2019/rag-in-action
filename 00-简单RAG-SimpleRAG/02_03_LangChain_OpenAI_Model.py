@@ -1,3 +1,14 @@
+import os
+from dotenv import load_dotenv
+from pathlib import Path
+
+# Load environment variables from .env file in parent directory
+env_path = Path(__file__).parent.parent / '.env'
+load_dotenv(env_path)
+
+# Set OpenAI API key
+os.environ["OPENAI_API_KEY"] = os.getenv("OPENAI_API_KEY")
+
 # 1. 加载文档
 from langchain_community.document_loaders import WebBaseLoader
 loader = WebBaseLoader(
@@ -24,6 +35,7 @@ question = "黑悟空有哪些游戏场景？"
 
 # 6. 在向量存储中搜索相关文档，并准备上下文内容
 retrieved_docs = vector_store.similarity_search(question, k=3)
+
 docs_content = "\n\n".join(doc.page_content for doc in retrieved_docs)
 
 # 7. 构建提示模板
@@ -38,7 +50,7 @@ prompt = ChatPromptTemplate.from_template("""
 
 # 8. 使用大语言模型生成答案
 from langchain_openai import ChatOpenAI
-llm = ChatOpenAI(model="gpt-3.5-turbo")
+llm = ChatOpenAI(model="gpt-4o")
 answer = llm.invoke(prompt.format(question=question, context=docs_content))
 print(answer.content)
 
