@@ -1,7 +1,7 @@
 version: '3.4'
 services:
   weaviate:
-    image: semitechnologies/weaviate:1.30.2
+    image: semitechnologies/weaviate:1.39.13
     ports:
       - "8080:8080"
       - "50051:50051"
